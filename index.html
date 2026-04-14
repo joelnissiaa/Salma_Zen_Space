@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salma's Zen Space 🌿</title>
+    <!-- Tailwind CSS for Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        nature: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Nature Animated Background */
+        body {
+            background: linear-gradient(-45deg, #dcfce7, #bbf7d0, #fef08a, #ccfbf1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            color: #14532d;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(34, 197, 94, 0.1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #86efac;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4ade80;
+        }
+
+        /* Checkbox Styling */
+        .task-checkbox:checked + label {
+            text-decoration: line-through;
+            color: #166534;
+            opacity: 0.6;
+        }
+
+        /* Smooth transitions */
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 font-sans">
+
+    <div class="max-w-6xl mx-auto space-y-6">
+        
+        <!-- Header Section -->
+        <header class="glass-card rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <h1 class="text-3xl md:text-4xl font-bold text-nature-800 flex items-center justify-center md:justify-start gap-2">
+                    Halo, Salma Putry! <i data-lucide="leaf" class="text-nature-500"></i>
+                </h1>
+                <p class="text-nature-600 mt-1 text-sm md:text-base">Siap untuk <span class="italic font-medium">slay</span> hari ini? Jangan lupa stay hydrated! 💧</p>
+            </div>
+            <div class="text-center md:text-right bg-white/50 rounded-2xl p-4 shadow-sm border border-white/60">
+                <p id="current-date" class="font-medium text-nature-700"></p>
+                <p id="current-time" class="text-2xl font-bold text-nature-900"></p>
+            </div>
+        </header>
+
+        <!-- Mood Tracker (Gen Z Vibe) -->
+        <section class="glass-card rounded-3xl p-6">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5"></i> Vibes kamu hari ini gimana?
+            </h2>
+            <div class="flex flex-wrap gap-3" id="mood-container">
+                <button onclick="setMood(this)" class="mood-btn px-4 py-2 rounded-full bg-white/60 hover:bg-nature-200 border border-nature-300 smooth-transition flex items-center gap-2">
+                    ✨ Slay banget
+                </button>
+                <button onclick="setMood(this)" class="mood-btn px-4 py-2 rounded-full bg-white/60 hover:bg-nature-200 border border-nature-300 smooth-transition flex items-center gap-2">
+                    🌿 Butuh Healing
+                </button>
+                <button onclick="setMood(this)" class="mood-btn px-4 py-2 rounded-full bg-white/60 hover:bg-nature-200 border border-nature-300 smooth-transition flex items-center gap-2">
+                    🛌 Mode Rotting
+                </button>
+                <button onclick="setMood(this)" class="mood-btn px-4 py-2 rounded-full bg-white/60 hover:bg-nature-200 border border-nature-300 smooth-transition flex items-center gap-2">
+                    💼 Produktif Mode On
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Daily Quests (To-Do List) -->
+            <section class="glass-card rounded-3xl p-6 flex flex-col h-[500px]">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold flex items-center gap-2">
+                        <i data-lucide="check-circle" class="text-nature-600"></i> Quest Hari Ini 🎯
+                    </h2>
+                    <span id="task-counter" class="bg-nature-200 text-nature-800 text-xs font-bold px-3 py-1 rounded-full">0/0 Selesai</span>
+                </div>
+
+                <!-- Add Task Form -->
+                <form id="task-form" class="flex gap-2 mb-4">
+                    <input type="text" id="task-input" placeholder="Mau ngapain hari ini?..." class="flex-1 px-4 py-2.5 rounded-xl bg-white/60 border border-nature-200 focus:outline-none focus:ring-2 focus:ring-nature-400 placeholder-nature-400" required>
+                    <button type="submit" class="bg-nature-500 hover:bg-nature-600 text-white p-2.5 rounded-xl smooth-transition shadow-sm">
+                        <i data-lucide="plus"></i>
+                    </button>
+                </form>
+
+                <!-- Task List -->
+                <div class="overflow-y-auto flex-1 pr-2 space-y-3" id="task-list">
+                    <!-- Tasks will be injected here -->
+                </div>
+            </section>
+
+            <!-- Expense Tracker -->
+            <section class="glass-card rounded-3xl p-6 flex flex-col h-[500px]">
+                <h2 class="text-2xl font-bold flex items-center gap-2 mb-6">
+                    <i data-lucide="wallet" class="text-nature-600"></i> Spill Pengeluaran 💸
+                </h2>
+
+                <!-- Total Expense Card -->
+                <div class="bg-gradient-to-r from-nature-400 to-nature-500 rounded-2xl p-4 text-white mb-6 shadow-md relative overflow-hidden">
+                    <i data-lucide="flower-2" class="absolute -right-4 -bottom-4 w-24 h-24 opacity-20"></i>
+                    <p class="text-nature-50 text-sm font-medium mb-1">Total Damage Hari Ini:</p>
+                    <h3 class="text-3xl font-bold" id="total-expense">Rp 0</h3>
+                </div>
+
+                <!-- Add Expense Form -->
+                <form id="expense-form" class="space-y-3 mb-4">
+                    <div class="flex gap-2">
+                        <input type="text" id="expense-name" placeholder="Beli apa tadi?..." class="flex-1 px-4 py-2.5 rounded-xl bg-white/60 border border-nature-200 focus:outline-none focus:ring-2 focus:ring-nature-400 placeholder-nature-400" required>
+                        <select id="expense-category" class="px-3 py-2.5 rounded-xl bg-white/60 border border-nature-200 focus:outline-none focus:ring-2 focus:ring-nature-400 text-sm">
+                            <option value="🍱 Makan/Minum">🍱 Makan/Minum</option>
+                            <option value="☕ Kopi/Boba">☕ Kopi/Boba</option>
+                            <option value="🛒 Racun Online">🛒 Racun Online</option>
+                            <option value="🌿 Healing">🌿 Healing</option>
+                            <option value="🚕 Transport">🚕 Transport</option>
+                            <option value="💡 Lainnya">💡 Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="relative flex-1">
+                            <span class="absolute left-3 top-2.5 text-nature-500 font-medium">Rp</span>
+                            <input type="number" id="expense-amount" placeholder="0" class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/60 border border-nature-200 focus:outline-none focus:ring-2 focus:ring-nature-400 placeholder-nature-400" min="0" required>
+                        </div>
+                        <button type="submit" class="bg-nature-500 hover:bg-nature-600 text-white px-4 py-2.5 rounded-xl smooth-transition shadow-sm text-sm font-medium flex items-center gap-1">
+                            Catat <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Expense List -->
+                <div class="overflow-y-auto flex-1 pr-2 space-y-3" id="expense-list">
+                    <!-- Expenses will be injected here -->
+                </div>
+            </section>
+
+        </div>
+        
+        <!-- Footer -->
+        <footer class="text-center text-nature-600 text-sm py-4">
+            Dibuat dengan 💚 untuk Salma Putry
+        </footer>
+    </div>
+
+    <!-- Notification Toast (Hidden by default) -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-white/90 backdrop-blur-sm border border-nature-200 text-nature-800 px-6 py-3 rounded-2xl shadow-lg transform translate-y-20 opacity-0 smooth-transition flex items-center gap-2 z-50">
+        <i data-lucide="info" class="text-nature-500"></i>
+        <span id="toast-message">Pesan notifikasi</span>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- STATE MANAGEMENT ---
+        // In-memory state for this session
+        let tasks = [];
+        let expenses = [];
+
+        // --- CLOCK & DATE ---
+        function updateClock() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('id-ID', options);
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- MOOD TRACKER ---
+        function setMood(btn) {
+            // Reset all buttons
+            document.querySelectorAll('.mood-btn').forEach(b => {
+                b.classList.remove('bg-nature-300', 'border-nature-500', 'font-medium', 'shadow-sm');
+                b.classList.add('bg-white/60');
+            });
+            // Highlight selected
+            btn.classList.remove('bg-white/60');
+            btn.classList.add('bg-nature-300', 'border-nature-500', 'font-medium', 'shadow-sm');
+            showToast("Vibes kamu udah di-set! " + btn.innerText.split(' ')[0]);
+        }
+
+        // --- TO-DO LIST LOGIC ---
+        const taskForm = document.getElementById('task-form');
+        const taskInput = document.getElementById('task-input');
+        const taskList = document.getElementById('task-list');
+        const taskCounter = document.getElementById('task-counter');
+
+        taskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = taskInput.value.trim();
+            if (text) {
+                tasks.unshift({ id: Date.now(), text: text, done: false });
+                taskInput.value = '';
+                renderTasks();
+                showToast("Quest baru ditambahkan! ✨");
+            }
+        });
+
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.done = !task.done;
+                renderTasks();
+            }
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            renderTasks();
+        }
+
+        function renderTasks() {
+            taskList.innerHTML = '';
+            
+            if (tasks.length === 0) {
+                taskList.innerHTML = `
+                    <div class="text-center text-nature-500 py-8 flex flex-col items-center">
+                        <i data-lucide="leaf" class="w-8 h-8 mb-2 opacity-50"></i>
+                        <p class="text-sm">Belum ada quest hari ini. Coba tambahin sesuatu!</p>
+                    </div>`;
+                lucide.createIcons();
+            } else {
+                tasks.forEach(task => {
+                    const div = document.createElement('div');
+                    div.className = `flex items-center justify-between p-3 rounded-xl border ${task.done ? 'bg-nature-100/50 border-nature-200' : 'bg-white/60 border-white/80 shadow-sm'} smooth-transition`;
+                    
+                    div.innerHTML = `
+                        <div class="flex items-center gap-3 flex-1 overflow-hidden">
+                            <input type="checkbox" id="task-${task.id}" class="task-checkbox w-5 h-5 text-nature-500 rounded border-gray-300 focus:ring-nature-400 accent-nature-500 cursor-pointer" ${task.done ? 'checked' : ''} onchange="toggleTask(${task.id})">
+                            <label for="task-${task.id}" class="cursor-pointer select-none truncate flex-1 font-medium ${task.done ? 'text-nature-600 line-through opacity-60' : 'text-nature-900'}">${task.text}</label>
+                        </div>
+                        <button onclick="deleteTask(${task.id})" class="text-red-400 hover:text-red-600 p-1 rounded-lg hover:bg-red-50 smooth-transition" title="Hapus">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    `;
+                    taskList.appendChild(div);
+                });
+                lucide.createIcons();
+            }
+            
+            // Update counter
+            const doneCount = tasks.filter(t => t.done).length;
+            taskCounter.textContent = `${doneCount}/${tasks.length} Selesai`;
+            if(tasks.length > 0 && doneCount === tasks.length) {
+                taskCounter.classList.add('bg-nature-500', 'text-white');
+                taskCounter.classList.remove('bg-nature-200', 'text-nature-800');
+            } else {
+                taskCounter.classList.remove('bg-nature-500', 'text-white');
+                taskCounter.classList.add('bg-nature-200', 'text-nature-800');
+            }
+        }
+
+        // --- EXPENSE TRACKER LOGIC ---
+        const expenseForm = document.getElementById('expense-form');
+        const expenseName = document.getElementById('expense-name');
+        const expenseAmount = document.getElementById('expense-amount');
+        const expenseCategory = document.getElementById('expense-category');
+        const expenseList = document.getElementById('expense-list');
+        const totalExpenseEl = document.getElementById('total-expense');
+
+        expenseForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = expenseName.value.trim();
+            const amount = parseInt(expenseAmount.value);
+            const category = expenseCategory.value;
+
+            if (name && amount > 0) {
+                expenses.unshift({ id: Date.now(), name, amount, category });
+                expenseName.value = '';
+                expenseAmount.value = '';
+                renderExpenses();
+                showToast("Pengeluaran dicatat! 💸");
+            }
+        });
+
+        function deleteExpense(id) {
+            expenses = expenses.filter(e => e.id !== id);
+            renderExpenses();
+        }
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+
+        function renderExpenses() {
+            expenseList.innerHTML = '';
+            let total = 0;
+
+            if (expenses.length === 0) {
+                expenseList.innerHTML = `
+                    <div class="text-center text-nature-500 py-8 flex flex-col items-center">
+                        <i data-lucide="piggy-bank" class="w-8 h-8 mb-2 opacity-50"></i>
+                        <p class="text-sm">Dompet masih aman! Belum ada pengeluaran.</p>
+                    </div>`;
+                lucide.createIcons();
+            } else {
+                expenses.forEach(exp => {
+                    total += exp.amount;
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center justify-between p-3 rounded-xl bg-white/60 border border-white/80 shadow-sm';
+                    
+                    div.innerHTML = `
+                        <div class="flex flex-col flex-1 overflow-hidden">
+                            <span class="font-bold text-nature-900 truncate">${exp.name}</span>
+                            <span class="text-xs text-nature-600">${exp.category}</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-red-500">${formatRupiah(exp.amount)}</span>
+                            <button onclick="deleteExpense(${exp.id})" class="text-nature-400 hover:text-red-500 p-1 smooth-transition" title="Hapus">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    `;
+                    expenseList.appendChild(div);
+                });
+                lucide.createIcons();
+            }
+
+            totalExpenseEl.textContent = formatRupiah(total);
+        }
+
+        // --- TOAST NOTIFICATION ---
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initial Renders
+        renderTasks();
+        renderExpenses();
+
+    </script>
+</body>
+</html>
